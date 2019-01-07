@@ -46,7 +46,10 @@ class ProductAdapter(val items : List<FinalProduct>, val context: Context) : Rec
 
         holder.variantRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+
         AsyncTask.execute {
+
+            holder.variantRecycler.recycledViewPool.clear()
 
             val dbCall = RoomDbCall.getProducts(context)
 
@@ -59,7 +62,13 @@ class ProductAdapter(val items : List<FinalProduct>, val context: Context) : Rec
                         variants!!,
                         context = context
                     )
-            //(holder.variantRecycler.adapter as VariantAdapter).notifyDataSetChanged()
+
+            holder.variantRecycler.post {
+                if(holder.variantRecycler.adapter!=null)
+                    (holder.variantRecycler.adapter as VariantAdapter).notifyDataSetChanged()
+            }
+
+
         }
 
 

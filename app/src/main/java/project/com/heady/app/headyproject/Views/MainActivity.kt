@@ -6,6 +6,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import project.com.heady.app.headyproject.Database.RoomDbCall
@@ -122,6 +123,11 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 // Stuff that updates the UI
                 if(products?.isNotEmpty()!!) {
+                    product_recycler.recycledViewPool.clear()
+
+                    if(product_recycler.adapter != null)
+                        (product_recycler.adapter as ProductAdapter).notifyDataSetChanged()
+
                     product_recycler.adapter =
                             ProductAdapter(
                                 products,
