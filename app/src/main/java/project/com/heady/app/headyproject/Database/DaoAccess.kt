@@ -48,12 +48,32 @@ interface DaoAccess {
 
     @Query("SELECT * FROM product ORDER BY most_shared DESC")
     fun getAllProductsByMostSharedDescending():MutableList<FinalProduct>
-/*
-    @Query("SELECT * FROM variant WHERE product_id == :id")
-    fun getVariantDataFromId(id:Int):MutableList<Variant>
 
-    @Query("SELECT product.* , variant.* FROM product JOIN variant ON id = product_id ORDER BY most_shared DESC")
-    fun getAllJoined():MutableList<FinalProduct>*/
+    @Query("SELECT DISTINCT category_name FROM product")
+    fun getAllCategories():MutableList<String>
 
+
+    @Query("SELECT * FROM product where category_name=:cat_name ORDER BY view_count ASC")
+    fun getAllProductsByViewCountAscendingOnCategory(cat_name:String):MutableList<FinalProduct>
+
+    @Query("SELECT * FROM product where category_name=:cat_name ORDER BY view_count DESC")
+    fun getAllProductsByViewCountDescendingOnCategory(cat_name:String):MutableList<FinalProduct>
+
+
+    @Query("SELECT * FROM product where category_name=:cat_name ORDER BY order_count ASC")
+    fun getAllProductsByOrderCountAscendingOnCategory(cat_name:String):MutableList<FinalProduct>
+
+    @Query("SELECT * FROM product where category_name=:cat_name ORDER BY order_count DESC")
+    fun getAllProductsByOrderCountDescendingOnCategory(cat_name:String):MutableList<FinalProduct>
+
+
+    @Query("SELECT * FROM product where category_name=:cat_name ORDER BY most_shared ASC")
+    fun getAllProductsByMostSharedAscendingOnCategory(cat_name:String):MutableList<FinalProduct>
+
+    @Query("SELECT * FROM product where category_name=:cat_name ORDER BY most_shared DESC")
+    fun getAllProductsByMostSharedDescendingOnCategory(cat_name:String):MutableList<FinalProduct>
+
+    @Query("SELECT * FROM variant where product_id=:id")
+    fun getVariants(id:Int):MutableList<FinalVariant>
 
 }

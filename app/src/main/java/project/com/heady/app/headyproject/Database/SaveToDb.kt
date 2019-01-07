@@ -1,17 +1,14 @@
-package project.com.heady.app.headyproject
+package project.com.heady.app.headyproject.Database
 
 import android.app.Activity
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.os.AsyncTask
 import android.util.Log
-import project.com.heady.app.headyproject.Database.RoomDbCall
 import project.com.heady.app.headyproject.Models.Category
 import project.com.heady.app.headyproject.Models.FinalProduct
 import project.com.heady.app.headyproject.Models.FinalVariant
 import project.com.heady.app.headyproject.Models.Ranking
 
-class DbOperations internal constructor(internal var activity: Activity) {
+class SaveToDb internal constructor(internal var activity: Activity) {
 
     fun saveDb(categoryData: MutableList<Category>,rankingData: MutableList<Ranking>) {
 
@@ -95,49 +92,5 @@ class DbOperations internal constructor(internal var activity: Activity) {
                 }
         Log.d("Finished ","Saving to Db")
     }
-/*
-    fun getAllProductsByViewCountAscending():LiveData<MutableList<FinalProduct>>
-    {
-        var p: MutableList<FinalProduct> ?= null
-        AsyncTask.execute {
-            val dbCall = RoomDbCall.getProducts(activity)
-            p = dbCall.daoAccess().getAllProductsByViewCountAscending()
-        }
-
-
-    }*/
-/*
-
-    fun getAllProductsByViewCountDescending():LiveData<MutableList<FinalProduct>>
-    {
-        var dbCall = RoomDbCall.getProducts(activity)
-        return dbCall.daoAccess().getAllProductsByViewCountDescending()
-    }
-
-    fun getAllProductsByOrderCountAscending():LiveData<MutableList<FinalProduct>>
-    {
-        var dbCall = RoomDbCall.getProducts(activity)
-        return dbCall.daoAccess().getAllProductsByOrderCountAscending()
-    }
-*/
-
-    fun getAllProductsByOrderCountDescending():MutableList<FinalProduct>
-    {
-        var dbCall = RoomDbCall.getProducts(activity)
-        return dbCall.daoAccess().getAllProductsByOrderCountDescending()
-    }
-
-    fun getAllProductsByMostSharedAscending():MutableList<FinalProduct>
-    {
-        var dbCall = RoomDbCall.getProducts(activity)
-        return dbCall.daoAccess().getAllProductsByMostSharedAscending()
-    }
-
-    fun getAllProductsByMostSharedDescending():MutableList<FinalProduct>
-    {
-        var dbCall = RoomDbCall.getProducts(activity)
-        return dbCall.daoAccess().getAllProductsByMostSharedDescending()
-    }
-
 
 }

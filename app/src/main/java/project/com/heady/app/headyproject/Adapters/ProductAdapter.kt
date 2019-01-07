@@ -1,14 +1,20 @@
-package project.com.heady.app.headyproject
+package project.com.heady.app.headyproject.Adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.AsyncTask
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.product_item.view.*
+import project.com.heady.app.headyproject.Database.RoomDbCall
 import project.com.heady.app.headyproject.Models.FinalProduct
+import project.com.heady.app.headyproject.Models.FinalVariant
+import project.com.heady.app.headyproject.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,7 +23,13 @@ class ProductAdapter(val items : List<FinalProduct>, val context: Context) : Rec
     // Inflates the item views
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         Log.d("inside adap","inside")
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.product_item, p0, false))
+        return ViewHolder(
+            LayoutInflater.from(context).inflate(
+                R.layout.product_item,
+                p0,
+                false
+            )
+        )
     }
 
     // Binds each product in the ArrayList to a view
@@ -30,14 +42,33 @@ class ProductAdapter(val items : List<FinalProduct>, val context: Context) : Rec
         holder.mostShared.text = items[position].most_shared.toString()
         holder.taxName.text = items[position].tax_name
         holder.taxValue.text = items[position].tax_value.toString()
-        holder.categoryName.text = items[position].category_name
+        holder.categoryName.text = "Category : ${items[position].category_name}"
+
+        holder.variantRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        AsyncTask.execute {
+
+            val dbCall = RoomDbCall.getProducts(context)
+
+            val variants: MutableList<FinalVariant>? = dbCall.daoAccess().getVariants(items[position].product_id)
+
+            Log.d("Variant Size", variants?.size.toString())
+
+            holder.variantRecycler.adapter =
+                    VariantAdapter(
+                        variants!!,
+                        context = context
+                    )
+            //(holder.variantRecycler.adapter as VariantAdapter).notifyDataSetChanged()
+        }
+
+
 
 
     }
 
     // Gets the number of products in the list
     override fun getItemCount(): Int {
-        Log.d("inside adap","items "+items.size)
         return items.size
     }
 
@@ -59,7 +90,7 @@ class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 }
 
 fun dateTime(dateString: String?): String {
-    Log.d("235",dateString);
+    Log.d("235",dateString)
 
     val input = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     input.timeZone = TimeZone.getTimeZone("UTC")

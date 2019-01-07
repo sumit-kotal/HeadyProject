@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">HeadyProject</string>
+    
+    <string-array name="spinner">
+        <item>View Count (Ascending)</item>
+        <item>View Count (Descending)</item>
+        <item>Order Count (Ascending)</item>
+        <item>Order Count (Descending)</item>
+        <item>Most Shared (Ascending)</item>
+        <item>Most Shared (Descending)</item>
+    </string-array>
+    
 </resources>
